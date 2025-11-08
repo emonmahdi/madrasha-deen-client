@@ -1,21 +1,12 @@
 // src/components/shared/Navbar.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router";
 import { FaSun, FaMoon, FaBars, FaTimes } from "react-icons/fa";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Toggle dark mode
-  const handleDarkToggle = () => {
-    setDarkMode(!darkMode);
-    if (!darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+  const { darkMode, toggleTheme } = useContext(ThemeContext);
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -25,26 +16,24 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 shadow-md sticky top-0 z-50 transition-colors duration-300">
+    <nav className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 dark:shadow-[#3d3c3c] shadow-md sticky top-0 z-50 transition-colors duration-300">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Left: Logo */}
-        <div className="shrink">
-          <Link
-            to="/"
-            className="text-2xl font-extrabold tracking-wide text-blue-600 dark:text-blue-400"
-          >
-            MadrashaConnect
-          </Link>
-        </div>
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl font-extrabold tracking-wide text-blue-600 dark:text-blue-400"
+        >
+          MadrashaConnect
+        </Link>
 
-        {/* Center: Menu (Desktop) */}
+        {/* Center Links */}
         <div className="hidden md:flex md:flex-1 md:justify-center">
           <ul className="flex gap-x-6">
             {navLinks.map((link) => (
               <li key={link.to}>
                 <Link
                   to={link.to}
-                  className="px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                  className="px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition"
                 >
                   {link.label}
                 </Link>
@@ -53,24 +42,21 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Right: Actions */}
+        {/* Right: Buttons */}
         <div className="flex items-center space-x-3">
-          {/* Become a Teacher */}
           <button className="hidden md:inline px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition">
             Become a Teacher
           </button>
-
-          {/* Login/Register */}
           <Link
             to="/login"
-            className="hidden md:inline px-4 py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition"
+            className="hidden md:inline px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition"
           >
             Login / Register
           </Link>
 
-          {/* Dark/Light Mode Toggle */}
+          {/* Dark/Light toggle */}
           <button
-            onClick={handleDarkToggle}
+            onClick={toggleTheme}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
             aria-label="Toggle dark mode"
           >
@@ -81,11 +67,10 @@ const Navbar = () => {
             )}
           </button>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile menu */}
           <button
             className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
           >
             {menuOpen ? (
               <FaTimes className="text-xl" />
@@ -96,16 +81,16 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu (Visible when menuOpen=true) */}
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 transition-all">
+        <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
           <ul className="flex flex-col space-y-2 px-4 py-4">
             {navLinks.map((link) => (
               <li key={link.to}>
                 <Link
                   to={link.to}
-                  className="block px-3 py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition"
                   onClick={() => setMenuOpen(false)}
+                  className="block px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   {link.label}
                 </Link>
@@ -114,7 +99,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/login"
-                className="block px-3 py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition"
+                className="block px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400"
                 onClick={() => setMenuOpen(false)}
               >
                 Login / Register
