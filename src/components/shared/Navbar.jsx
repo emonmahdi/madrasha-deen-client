@@ -1,5 +1,5 @@
 // src/components/shared/Navbar.jsx
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router";
 import { FaSun, FaMoon, FaBars, FaTimes } from "react-icons/fa";
 import { ThemeContext } from "../../context/ThemeContext";
@@ -11,6 +11,10 @@ const Navbar = () => {
 
   const { user, logOut } = useAuth();
   console.log(user);
+
+  useEffect(() => {
+    console.log("🧠 Global user:", user);
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -60,12 +64,35 @@ const Navbar = () => {
           <button className="hidden md:inline px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition">
             Become a Teacher
           </button>
-          <Link
-            to="/login"
-            className="hidden md:inline px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition"
-          >
-            Login / Register
-          </Link>
+          {user && user?.email ? (
+            <>
+              {/* Show user photo or name if available */}
+              {user?.photoURL && (
+                <img
+                  src={user?.photoURL}
+                  alt={user?.displayName || "User"}
+                  className="w-8 h-8 rounded-full border border-gray-300"
+                />
+              )}
+              <span className="hidden md:inline text-sm font-medium">
+                {user?.displayName || user?.email}
+              </span>
+
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-gray-800 transition"
+            >
+              Login / Register
+            </Link>
+          )}
 
           {/* Dark/Light toggle */}
           <button
