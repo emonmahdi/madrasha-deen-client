@@ -3,10 +3,23 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router";
 import { FaSun, FaMoon, FaBars, FaTimes } from "react-icons/fa";
 import { ThemeContext } from "../../context/ThemeContext";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { darkMode, toggleTheme } = useContext(ThemeContext);
+
+  const { user, logOut } = useAuth();
+  console.log(user);
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      console.log("User logged out");
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+    }
+  };
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -96,15 +109,38 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                to="/login"
-                className="block px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400"
-                onClick={() => setMenuOpen(false)}
-              >
-                Login / Register
-              </Link>
-            </li>
+            {/* conditional log out button */}
+            {user && user.email ? (
+              <>
+                {/* Show user photo or name if available */}
+                {user.photoURL && (
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName || "User"}
+                    className="w-8 h-8 rounded-full border border-gray-300"
+                  />
+                )}
+                <span className="hidden md:inline text-sm font-medium">
+                  {user.displayName || user.email}
+                </span>
+
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <li>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-gray-800 transition"
+                >
+                  Login / Register
+                </Link>
+              </li>
+            )}
             <li>
               <button
                 className="w-full text-left px-3 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition"

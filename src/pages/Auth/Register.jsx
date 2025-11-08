@@ -3,7 +3,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import bgImg from '../../assets/register.png'
+import bgImg from "../../assets/register.png";
+import GoogleButton from "../../components/ui/GoogleButton";
 
 const Register = () => {
   const {
@@ -12,9 +13,9 @@ const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data) => {
-    // handle register logic here
+  const onSubmit = async (data) => {
     console.log("Register Data:", data);
+    // Example: await createUserWithEmailAndPassword(auth, data.email, data.password)
   };
 
   return (
@@ -31,6 +32,7 @@ const Register = () => {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Full Name */}
           <div>
             <label htmlFor="name" className="block mb-1 font-medium">
               Full Name
@@ -57,6 +59,7 @@ const Register = () => {
             )}
           </div>
 
+          {/* Email */}
           <div>
             <label htmlFor="email" className="block mb-1 font-medium">
               Email Address
@@ -71,14 +74,17 @@ const Register = () => {
                   : "border-gray-300 dark:border-gray-700"
               } bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register("email", {
-                required: "Email is required", 
+                required: "Email is required",
               })}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
+          {/* Password */}
           <div>
             <label htmlFor="password" className="block mb-1 font-medium">
               Password
@@ -101,10 +107,13 @@ const Register = () => {
               })}
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
+          {/* 🔹 Register Button */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -112,8 +121,19 @@ const Register = () => {
           >
             {isSubmitting ? "Registering..." : "Register"}
           </button>
+
+          {/* 🔹 Divider */}
+          <div className="flex items-center gap-2 my-3">
+            <div className="h-px bg-gray-300 dark:bg-gray-700 flex-grow" />
+            <span className="text-sm text-gray-500">or</span>
+            <div className="h-px bg-gray-300 dark:bg-gray-700 flex-grow" />
+          </div>
+
+          {/* 🔹 Google Sign-in Button */}
+          <GoogleButton />
         </form>
 
+        {/* Link to Login Page */}
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{" "}
           <Link

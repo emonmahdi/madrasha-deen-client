@@ -3,7 +3,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import bgImg from '../../assets/login.png'
+import bgImg from "../../assets/login.png";
+import GoogleButton from "../../components/ui/GoogleButton";
 
 const Login = () => {
   const {
@@ -12,9 +13,9 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data) => {
-    // handle login logic here
+  const onSubmit = async (data) => {
     console.log("Login Data:", data);
+    // signInWithEmailAndPassword(auth, data.email, data.password)
   };
 
   return (
@@ -44,12 +45,12 @@ const Login = () => {
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-700"
               } bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("email", {
-                required: "Email is required", 
-              })}
+              {...register("email", { required: "Email is required" })}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -75,7 +76,9 @@ const Login = () => {
               })}
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -84,8 +87,19 @@ const Login = () => {
             disabled={isSubmitting}
             className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition disabled:opacity-70"
           >
-            {isSubmitting ? "Logging in..." : "Login"}
+            {" "}
+            {isSubmitting ? "Logging in..." : "Login"}{" "}
           </button>
+
+          {/* 🔹 Divider */}
+          <div className="flex items-center gap-2 my-3">
+            <div className="h-px bg-gray-300 dark:bg-gray-700 flex-grow" />
+            <span className="text-sm text-gray-500">or</span>
+            <div className="h-px bg-gray-300 dark:bg-gray-700 flex-grow" />
+          </div>
+
+          {/* 🔹 Reusable Google Sign-in Button */}
+          <GoogleButton />
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
