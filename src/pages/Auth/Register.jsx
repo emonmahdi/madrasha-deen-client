@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { motion } from "motion/react";
 import bgImg from "../../assets/register.png";
 import GoogleButton from "../../components/ui/GoogleButton";
@@ -11,6 +11,8 @@ const Register = () => {
   const { createUser } = useAuth();
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state || "/";
 
   const imgBBKey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -35,7 +37,7 @@ const Register = () => {
     const data = await res.json();
     setUploading(false);
 
-    return data?.data?.url; // ✅ return only the image URL
+    return data?.data?.url;
   };
 
   // ✅ Register Handler
@@ -56,7 +58,7 @@ const Register = () => {
       });
 
       console.log("User registered:", result.user);
-      navigate("/");
+      navigate(from);
     } catch (error) {
       console.error("Registration failed:", error.message);
     }
