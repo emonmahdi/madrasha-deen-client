@@ -40,7 +40,7 @@ const Navbar = () => {
           to="/"
           className="text-2xl font-extrabold tracking-wide text-blue-600 dark:text-blue-400"
         >
-          MadrashaConnect
+          MadrashaDeen
         </Link>
 
         {/* Center Links */}

@@ -1,12 +1,16 @@
 // src/pages/Auth/Login.jsx
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { motion } from "motion/react";
 import bgImg from "../../assets/login.png";
 import GoogleButton from "../../components/ui/GoogleButton";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+  const { signInUser } = useAuth();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -15,6 +19,14 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     console.log("Login Data:", data);
+
+    try {
+      const result = await signInUser(data.email, data.password);
+      console.log(result);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
     // signInWithEmailAndPassword(auth, data.email, data.password)
   };
 

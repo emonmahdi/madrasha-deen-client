@@ -1,12 +1,15 @@
 // src/pages/Auth/Register.jsx
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { motion } from "motion/react";
 import bgImg from "../../assets/register.png";
 import GoogleButton from "../../components/ui/GoogleButton";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
+  const { createUser } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,6 +18,15 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     console.log("Register Data:", data);
+
+    try {
+      const result = await createUser(data.email, data.password);
+      console.log(result);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+
     // Example: await createUserWithEmailAndPassword(auth, data.email, data.password)
   };
 
