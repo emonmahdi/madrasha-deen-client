@@ -1,33 +1,65 @@
-// src/pages/Auth/Register.jsx
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { motion } from "motion/react";
 import bgImg from "../../assets/register.png";
 import GoogleButton from "../../components/ui/GoogleButton";
 import useAuth from "../../hooks/useAuth";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
   const { createUser } = useAuth();
+  const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
+
+  const imgBBKey = import.meta.env.VITE_IMGBB_API_KEY;
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    console.log("Register Data:", data);
+  // ✅ Upload Image to ImgBB
+  const handleUploadImage = async (file) => {
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("image", file);
 
+    const url = `https://api.imgbb.com/1/upload?expiration=600&key=${imgBBKey}`;
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    setUploading(false);
+
+    return data?.data?.url; // ✅ return only the image URL
+  };
+
+  // ✅ Register Handler
+  const onSubmit = async (data) => {
     try {
+      let photoURL = "";
+
+      if (data.photo[0]) {
+        photoURL = await handleUploadImage(data.photo[0]);
+      }
+
       const result = await createUser(data.email, data.password);
-      console.log(result);
+
+      // ✅ Update Firebase User Profile
+      await updateProfile(result.user, {
+        displayName: data.name,
+        photoURL: photoURL,
+      });
+
+      console.log("User registered:", result.user);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error("Registration failed:", error.message);
     }
-
-    // Example: await createUserWithEmailAndPassword(auth, data.email, data.password)
   };
 
   return (
@@ -71,6 +103,35 @@ const Register = () => {
             )}
           </div>
 
+          {/* Photo Upload */}
+          <div>
+            <label htmlFor="photo" className="block mb-1 font-medium">
+              Profile Picture
+            </label>
+            <input
+              type="file"
+              id="photo"
+              accept="image/*"
+              onChange={(e) => handleUploadImage(e.target.files[0])}
+              className={`w-full px-4 py-2 rounded border ${
+                errors.photo
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-700"
+              } bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register("photo", {
+                required: "Profile picture is required",
+              })}
+            />
+            {uploading && (
+              <p className="text-blue-500 text-sm mt-1">Uploading image...</p>
+            )}
+            {errors.photo && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.photo.message}
+              </p>
+            )}
+          </div>
+
           {/* Email */}
           <div>
             <label htmlFor="email" className="block mb-1 font-medium">
@@ -85,9 +146,7 @@ const Register = () => {
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-700"
               } bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("email", {
-                required: "Email is required",
-              })}
+              {...register("email", { required: "Email is required" })}
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -125,27 +184,26 @@ const Register = () => {
             )}
           </div>
 
-          {/* 🔹 Register Button */}
+          {/* Submit Button */}
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || uploading}
             className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition disabled:opacity-70"
           >
-            {isSubmitting ? "Registering..." : "Register"}
+            {isSubmitting || uploading ? "Processing..." : "Register"}
           </button>
 
-          {/* 🔹 Divider */}
+          {/* Divider */}
           <div className="flex items-center gap-2 my-3">
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-grow" />
             <span className="text-sm text-gray-500">or</span>
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-grow" />
           </div>
 
-          {/* 🔹 Google Sign-in Button */}
+          {/* Google Sign-in */}
           <GoogleButton />
         </form>
 
-        {/* Link to Login Page */}
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{" "}
           <Link
