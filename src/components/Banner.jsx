@@ -6,7 +6,6 @@ const Banner = () => {
   return (
     <section className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 py-16 transition-colors duration-300 overflow-hidden">
       <div className="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-12">
-        
         {/* Left Side (Text) */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -24,10 +23,10 @@ const Banner = () => {
 
           <div className="flex justify-center md:justify-start gap-4">
             <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition">
-              Get Started
+              🎓 Apply for Admission
             </button>
             <button className="px-6 py-3 border border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition">
-              Explore Courses
+              👳‍♂️ Join as a Teacher
             </button>
           </div>
         </motion.div>
