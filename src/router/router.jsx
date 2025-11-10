@@ -9,6 +9,8 @@ import Register from "../pages/Auth/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
 import PrivateRoute from "../routes/PrivateRoute";
+import AdmissionForm from "../components/Admission/AdmissionForm";
+import AdmissionDetails from "../components/Admission/AdmissionDetails";
 
 const router = new createBrowserRouter([
   {
@@ -18,6 +20,14 @@ const router = new createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "/admission-details/:id",
+        Component: AdmissionDetails,
+      },
+      {
+        path: "/admission-form/:id",
+        Component: AdmissionForm,
       },
     ],
   },

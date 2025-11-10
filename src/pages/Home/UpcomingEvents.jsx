@@ -1,6 +1,13 @@
+/* eslint-disable no-unused-vars */
+
 import React from "react";
 import { motion } from "motion/react";
-import { FaCalendarWeek, FaMosque, FaClock, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaCalendarWeek,
+  FaMosque,
+  FaClock,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 
 const events = [
   {
@@ -51,7 +58,8 @@ const UpcomingEvents = () => {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="text-gray-500 dark:text-gray-400 mt-3 text-lg"
         >
-          Stay connected with our upcoming Islamic programs, competitions, and waz mahfils.
+          Stay connected with our upcoming Islamic programs, competitions, and
+          waz mahfils.
         </motion.p>
       </div>
 
