@@ -47,7 +47,7 @@ const AdmissionCards = () => {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 py-20 px-6 md:px-12 lg:px-24 transition-colors duration-500">
+    <section className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 py-20 px-6 md:px-12 lg:px-24 transition-colors duration-200">
       <div className="max-w-6xl mx-auto px-4 text-center">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
