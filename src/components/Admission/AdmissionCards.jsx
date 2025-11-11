@@ -9,42 +9,38 @@ import {
   FaClock,
   FaMoneyBillWave,
 } from "react-icons/fa";
-
-import { qaumiClassesFullData } from "../../assets/data/qaumiClassesFullData";
-
-// const dummyClasses = [
-//   {
-//     id: 1,
-//     name: "Quran & Tajweed",
-//     teacher: "Mufti Abdullah",
-//     duration: "6 Months",
-//     fee: "2000 BDT",
-//     image: "https://images.unsplash.com/photo-1590080875831-b3d65f69c1a4",
-//   },
-//   {
-//     id: 2,
-//     name: "Hadith Studies",
-//     teacher: "Maulana Imran Hossain",
-//     duration: "8 Months",
-//     fee: "2500 BDT",
-//     image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f",
-//   },
-//   {
-//     id: 3,
-//     name: "Fiqh & Islamic Law",
-//     teacher: "Mufti Rezaul Karim",
-//     duration: "10 Months",
-//     fee: "3000 BDT",
-//     image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da",
-//   },
-// ];
+import { useQuery } from "@tanstack/react-query";
+import { apiClient } from "../../hooks/apiClient";
 
 const AdmissionCards = () => {
   const navigate = useNavigate();
 
-  const handleApply = (cls) => {
-    navigate("/admission-form", { state: { classData: cls } });
-  };
+  const {
+    data: classes = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["classes"],
+    queryFn: async () => {
+      const { data } = await apiClient.get("http://localhost:5000/classes");
+      return data;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div className="text-center py-20 text-lg text-teal-600 dark:text-teal-400">
+        Loading classes...
+      </div>
+    );
+  }
+
+  if (isError)
+    return (
+      <div className="text-center py-20 text-red-500">
+        Failed to load classes. Please try again.
+      </div>
+    );
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 py-20 px-6 md:px-12 lg:px-24 transition-colors duration-200">
@@ -59,7 +55,7 @@ const AdmissionCards = () => {
         </motion.h2>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {qaumiClassesFullData.map((cls, index) => (
+          {classes.map((cls, index) => (
             <motion.div
               key={cls.id}
               initial={{ opacity: 0, y: 40 }}
@@ -91,7 +87,7 @@ const AdmissionCards = () => {
                   {cls.fee}
                 </p>
 
-                <Link to={`/admission-details/${cls.id}`}>
+                <Link to={`/admission-details/${cls._id}`}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     className="mt-4 inline-flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg w-full font-semibold transition"

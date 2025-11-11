@@ -8,8 +8,8 @@ import {
   FaClock,
   FaMoneyBillWave,
 } from "react-icons/fa";
-import Swal from "sweetalert2";
-import axios from "axios";
+import Swal from "sweetalert2"; 
+import { apiClient } from "../../hooks/apiClient";
 
 const AddClassForm = () => {
   const {
@@ -21,11 +21,11 @@ const AddClassForm = () => {
 
   const onSubmit = async (data) => {
     console.log("📘 New Class Data:", data);
-  
+
     try {
-      const res = await axios.post("http://localhost:5000/classes", data);
+      const res = await apiClient.post("http://localhost:5000/classes", data);
       console.log("Server Response:", res.data);
-  
+
       // ✅ Check insertedId safely
       if (res.data && res.data.insertedId) {
         await Swal.fire({
@@ -40,7 +40,7 @@ const AddClassForm = () => {
             ? "#fff"
             : "#000",
         });
-  
+
         // ✅ Reset after alert closes
         reset();
       } else {
@@ -52,7 +52,7 @@ const AddClassForm = () => {
       }
     } catch (error) {
       console.error("❌ Error adding class:", error);
-  
+
       Swal.fire({
         icon: "error",
         title: "Failed to Add Class!",
@@ -61,7 +61,6 @@ const AddClassForm = () => {
       });
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex justify-center items-center p-6">

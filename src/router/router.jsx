@@ -22,12 +22,22 @@ const router = new createBrowserRouter([
         index: true,
         Component: Home,
       },
+      // {
+      //   path: "/admission-details/:id",
+      //   loader: ({ params }) =>
+      //     fetch(`http://localhost:5000/classes/${params.id}`),
+      //   Component: AdmissionDetails,
+      // },
       {
         path: "/admission-details/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/classes/${params.id}`),
         Component: AdmissionDetails,
       },
       {
         path: "/admission-form/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/classes/${params.id}`),
         Component: AdmissionForm,
       },
       {
