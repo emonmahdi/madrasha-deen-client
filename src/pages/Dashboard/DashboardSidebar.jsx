@@ -6,17 +6,19 @@ const DashboardSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const { logOut } = useAuth();
 
   const getActiveClass = ({ isActive }) =>
-    `flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+    `flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ease-in-out ${
       isActive
-        ? "bg-blue-900 text-white font-semibold"
-        : "hover:bg-blue-700 text-gray-100"
+        ? "bg-teal-600 text-white font-semibold shadow-md"
+        : "hover:bg-teal-700 hover:text-white text-gray-200"
     }`;
 
   return (
     <aside
-      className={`fixed md:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-blue-600 to-blue-800 text-white transform ${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } transition-transform duration-300 md:translate-x-0`}
+      className={`fixed md:static inset-y-0 left-0 z-50 w-64 
+      bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 
+      text-gray-100 shadow-2xl border-r border-slate-700
+      transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+      transition-transform duration-300 md:translate-x-0`}
     >
       <div className="flex items-center justify-between p-4">
         <h2 className="text-xl font-bold">My Dashboard</h2>
@@ -32,6 +34,13 @@ const DashboardSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
         <NavLink to="/dashboard/my-admission" className={getActiveClass}>
           <User size={18} /> My Admission
+        </NavLink>
+
+        <NavLink to="/dashboard/add-class" className={getActiveClass}>
+          <User size={18} /> Add Class
+        </NavLink>
+        <NavLink to="/dashboard/all-admission" className={getActiveClass}>
+          <User size={18} /> All Admissions
         </NavLink>
 
         <NavLink to="/dashboard/profile" className={getActiveClass}>

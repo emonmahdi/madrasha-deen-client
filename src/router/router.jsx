@@ -13,6 +13,7 @@ import AdmissionForm from "../components/Admission/AdmissionForm";
 import AdmissionDetails from "../components/Admission/AdmissionDetails";
 import AddClassForm from "../components/Admission/AddClassForm";
 import MyAdmissions from "../pages/Dashboard/MyAdmission";
+import AllAdmission from "../pages/Dashboard/AllAdmission";
 
 const router = new createBrowserRouter([
   {
@@ -39,11 +40,11 @@ const router = new createBrowserRouter([
         path: "/admission-form/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:5000/classes/${params.id}`),
-        Component: AdmissionForm,
-      },
-      {
-        path: "/addClass",
-        Component: AddClassForm,
+        element: (
+          <PrivateRoute>
+            <AdmissionForm />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -68,8 +69,16 @@ const router = new createBrowserRouter([
         element: <DashboardHome />,
       },
       {
+        path: "add-class",
+        Component: AddClassForm,
+      },
+      {
         path: "my-admission",
         Component: MyAdmissions,
+      },
+      {
+        path: "all-admission",
+        Component: AllAdmission,
       },
     ],
   },

@@ -30,7 +30,6 @@ const Navbar = () => {
     { to: "/courses", label: "Courses" },
     { to: "/events", label: "Events" },
     { to: "/about", label: "About" },
-    { to: "/addClass", label: "Add Class" },
   ];
   const dashboardNavLinks = [{ to: "/dashboard", label: "Dashboard" }];
 

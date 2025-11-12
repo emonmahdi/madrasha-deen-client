@@ -354,7 +354,7 @@ const AdmissionForm = () => {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-semibold transition-all"
+              className="mt-4 inline-flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg w-full font-semibold transition"
             >
               আবেদন জমা দিন
             </button>
