@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import { motion } from "motion/react";
 import bgImg from "../../assets/register.png";
 import GoogleButton from "../../components/ui/GoogleButton";
-import useAuth from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 
 const Register = () => {

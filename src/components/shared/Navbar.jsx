@@ -3,14 +3,14 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router";
 import { FaSun, FaMoon, FaBars, FaTimes } from "react-icons/fa";
 import { ThemeContext } from "../../context/ThemeContext";
-import useAuth from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { darkMode, toggleTheme } = useContext(ThemeContext);
 
   const { user, logOut } = useAuth();
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     console.log("🧠 Global user:", user);

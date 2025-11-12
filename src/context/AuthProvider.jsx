@@ -18,6 +18,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // new user create
   const createUser = async (email, password, name, photoURL) => {
     setLoading(true);
     const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -31,30 +32,45 @@ const AuthProvider = ({ children }) => {
     return result;
   };
 
+  // signin user
   const signInUser = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
+
+  // Google Sign In user
 
   const googleSignIn = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
-  const logOut = () => {
-    setLoading(true);
-    return signOut(auth);
-  };
+  // State Handle
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("current user", currentUser);
       setUser(currentUser);
       setLoading(false);
     });
 
     return () => unSubscribe();
   }, []);
+
+  // Log Out
+  const logOut = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
+
+  // useEffect(() => {
+  //   const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+  //     console.log("current user", currentUser);
+  //     setUser(currentUser);
+  //     setLoading(false);
+  //   });
+
+  //   return () => unSubscribe();
+  // }, []);
 
   const authInfo = {
     user,

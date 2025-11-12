@@ -166,9 +166,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import { apiClient } from "../../hooks/apiClient";
+import { useAuth } from "../../hooks/useAuth";
 
 const AdmissionForm = () => {
-  const classData = useLoaderData(); // ✅ get data from loader (server)
+  const { user } = useAuth();
+  const classData = useLoaderData();
   const navigate = useNavigate();
 
   const {
@@ -189,19 +192,39 @@ const AdmissionForm = () => {
   }
 
   const onSubmit = async (data) => {
-    const submittedData = { ...data, appliedClass: classData.name };
+    const submittedData = {
+      ...data,
+      appliedClassId: classData._id,
+      appliedClassName: classData.name,
+      classTeacher: classData.teacher,
+      classDuration: classData.duration,
+      classFee: classData.fee,
+      status: "pending",
+      userEmail: user?.email,
+      created_At: new Date().toISOString(),
+    };
 
-    console.log("🎓 Admission Application Submitted:", submittedData);
+    try {
+      const res = await apiClient.post("/admissions", submittedData);
 
-    Swal.fire({
-      icon: "success",
-      title: "ভর্তি আবেদন সম্পন্ন হয়েছে!",
-      text: `${classData.name} ক্লাসে আপনার আবেদন গ্রহণ করা হয়েছে।`,
-      confirmButtonColor: "#10B981",
-    });
-
-    reset();
-    navigate(`/admission-details/${classData._id}`);
+      if (res.data.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: "ভর্তি আবেদন সম্পন্ন হয়েছে!",
+          text: `${classData.name} ক্লাসে আপনার আবেদন গ্রহণ করা হয়েছে।`,
+          confirmButtonColor: "#10B981",
+        });
+        reset();
+        navigate(`/admission-details/${classData._id}`);
+      }
+    } catch (error) {
+      console.error("Admission submit error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "আবেদন ব্যর্থ!",
+        text: "সার্ভারের সাথে সমস্যা হয়েছে, আবার চেষ্টা করুন।",
+      });
+    }
   };
 
   return (

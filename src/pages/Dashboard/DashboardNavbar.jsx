@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu } from "lucide-react"; 
-import useAuth from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router";
 
 const DashboardNavbar = ({ setSidebarOpen }) => {
