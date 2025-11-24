@@ -12,7 +12,7 @@ const AllAdmissions = () => {
   const { data: admissions = [], isLoading, isError } = useQuery({
     queryKey: ["all-admissions"],
     queryFn: async () => {
-      const res = await apiClient.get("/admissions");
+      const res = await apiClient.get("/all-admissions");
       return res.data;
     },
   });
