@@ -14,6 +14,7 @@ import AdmissionDetails from "../components/Admission/AdmissionDetails";
 import AddClassForm from "../components/Admission/AddClassForm";
 import MyAdmissions from "../pages/Dashboard/MyAdmission";
 import AllAdmission from "../pages/Dashboard/AllAdmission";
+import DashboardProfile from "../pages/Dashboard/DashboardProfile";
 
 const router = new createBrowserRouter([
   {
@@ -79,6 +80,10 @@ const router = new createBrowserRouter([
       {
         path: "all-admission",
         Component: AllAdmission,
+      },
+      {
+        path: "profile",
+        Component: DashboardProfile,
       },
     ],
   },
